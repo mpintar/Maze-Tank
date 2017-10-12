@@ -25,16 +25,25 @@ public class Enemy_Manager : MonoBehaviour{
 
     private float Enemy_Spawn_Timer;
     private bool Debugging;
+
+    private Game_Manager Game_Manager_Component;
     
     void Start()
     {
         Enemy_Spawn_Timer = 0.0f;
-        Debugging = this.GetComponent<Debug_Manager>().Get_Debug_Enemy_Manager();
+        Debugging = FindObjectOfType<Debug_Manager>().Get_Debug_Enemy_Manager();
+        Game_Manager_Component = FindObjectOfType<Game_Manager>();
     }
 
     void Update()
     {
-        if (this.GetComponent<Game_Manager>().Get_Current_Game_State() == global::Game_Manager.Game_States.Running)
+        if(Game_Manager_Component == null)
+        {
+            Debug.Log("Game Manager null on : " + gameObject.name, gameObject);
+            return;
+        }
+
+        if (Game_Manager_Component.Get_Current_Game_State() == Game_Manager.Game_States.Running)
         {
             Enemy_Spawn_Timer += Time.deltaTime;
             Debug.Log(Enemy_Spawn_Timer);
